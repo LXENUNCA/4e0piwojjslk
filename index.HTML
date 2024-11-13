@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenida</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+            flex-direction: column;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        .person {
+            width: 100px;
+            height: 150px;
+            margin: 20px auto;
+            background-color: #f78f8f;
+            position: relative;
+        }
+        .arms {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            animation: wave 2s infinite alternate;
+        }
+        .arm {
+            width: 30px;
+            height: 50px;
+            background-color: #e58b8b;
+            border-radius: 10px;
+        }
+        @keyframes wave {
+            0% {
+                transform: rotate(10deg);
+            }
+            100% {
+                transform: rotate(-10deg);
+            }
+        }
+        .message {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+        .activity {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .activity-list {
+            list-style: none;
+            padding: 0;
+        }
+        .activity-item {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        #submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #submit-btn:hover {
+            background-color: #45a049;
+        }
+        .chat-container {
+            margin-top: 30px;
+            background-color: #e9f1f5;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .chatbox {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .response {
+            margin-top: 10px;
+            background-color: #d0f7b8;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .chat-history {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .user-msg, .jasad-msg {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 10px;
+        }
+        .user-msg {
+            background-color: #e0e0e0;
+            text-align: left;
+        }
+        .jasad-msg {
+            background-color: #d0f7b8;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="person">
+        <div class="arms">
+            <div class="arm"></div>
+            <div class="arm"></div>
+        </div>
+    </div>
+    <div class="message">
+        ¡Hola, Joshua! Soy un estudiante y tengo 2 actividades pendientes.
+    </div>
+    <div class="message">
+        Mis áreas de estudio son:
+    </div>
+    <ul class="activity-list">
+        <li class="activity-item">Ciencias Sociales</li>
+        <li class="activity-item">Ciencia y Tecnología</li>
+    </ul>
+    <div class="activity">
+        <p>Actividad pendiente: Estudiar para el examen de Ciencias Sociales.</p>
+        <p>¿Listo para comenzar? ¡Hazlo ahora o edita tu documento!</p>
+    </div>
+    <button id="submit-btn" onclick="openDocument()">Ver documento de Ciencia y Tecnología</button>
+</div>
+
+<div class="chat-container">
+    <h2>Asistente Virtual Jasad</h2>
+    <div class="chat-history" id="chat-history"></div>
+    <input type="text" id="user-question" class="chatbox" placeholder="Haz una pregunta..." onkeydown="if(event.key === 'Enter') askJasad()">
+</div>
+
+<script>
+    function openDocument() {
+        window.open("https://www.mruv.com/ciencia-y-tecnologia", "_blank");
+    }
+
+    function askJasad() {
+        let userInput = document.getElementById("user-question").value;
+        if (userInput.trim() === "") return; // Evitar preguntas vacías
+        
+        let chatHistory = document.getElementById("chat-history");
+        
+        // Mostrar el mensaje del usuario
+        let userMessage = document.createElement("div");
+        userMessage.classList.add("user-msg");
+        userMessage.textContent = "Tú: " + userInput;
+        chatHistory.appendChild(userMessage);
+
+        // Respuesta de Jasad
+        let jasadResponse = document.createElement("div");
+        jasadResponse.classList.add("jasad-msg");
+        jasadResponse.textContent = getResponse(userInput);
+        chatHistory.appendChild(jasadResponse);
+
+        // Limpiar el campo de entrada
+        document.getElementById("user-question").value = "";
+
+        // Hacer que el chat se desplace hacia abajo
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+    function getResponse(question) {
+        question = question.toLowerCase();
+        
+        if (question.includes("qué es ciencia y tecnología")) {
+            return "Ciencia y Tecnología es un campo del conocimiento que estudia la naturaleza y el entorno humano para aplicar esos conocimientos en innovaciones tecnológicas.";
+        } else if (question.includes("quién es joshua")) {
+            return "Joshua es el nombre del estudiante que está interactuando conmigo, el asistente Jasad. ¿En qué puedo ayudarte hoy, Joshua?";
+        } else if (question.includes("qué son actividades pendientes")) {
+            return "Tus actividades pendientes incluyen estudiar para el examen de Ciencias Sociales y preparar contenido para Ciencia y Tecnología.";
+        } else if (question.includes("hola") || question.includes("bienvenido")) {
+            return "¡Hola! Soy Jasad, tu asistente virtual. ¿En qué puedo ayudarte hoy?";
+        } else {
+            return "Lo siento, no entiendo esa pregunta. ¿Puedes reformularla?";
+        }
+    }
+</script>
+
+</body>
+</html>
